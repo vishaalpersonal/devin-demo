@@ -25,9 +25,10 @@ const DEV_USER_COOKIE = "dev-user-id";
 export async function getSession(): Promise<Session | null> {
   const store = await cookies();
   const userId = store.get(DEV_USER_COOKIE)?.value;
-  const user = userId
-    ? await prisma.user.findUnique({ where: { id: userId } })
-    : await prisma.user.findFirst({ orderBy: { email: "asc" } });
+  const user =
+    (userId
+      ? await prisma.user.findUnique({ where: { id: userId } })
+      : null) ?? (await prisma.user.findFirst({ orderBy: { email: "asc" } }));
   if (!user) return null;
   return {
     user: {
