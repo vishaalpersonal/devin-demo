@@ -3,9 +3,9 @@ import { hasPermission } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import { getFlagProvider } from "@/lib/flags/provider";
 import { getRuleBool, getRuleInt, RULE_KEYS } from "@/lib/services/rules";
-import { DataTable } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
-import { FlagToggle } from "@/components/flags/flag-toggle";
+import { TabNav } from "@/components/shared/tab-nav";
+import { FlagsTable, type FlagRow } from "@/components/flags/flags-table";
 import { ChangeRequestActions } from "@/components/flags/change-request-actions";
 import {
   Card,
@@ -14,8 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { FlagView } from "@/lib/flags/provider";
-
 export const dynamic = "force-dynamic";
 
 export default async function FeatureFlagsPage() {
@@ -54,6 +52,14 @@ export default async function FeatureFlagsPage() {
           {requiredApprovers === 1 ? "" : "s"}).
         </p>
       </div>
+
+      <TabNav
+        tabs={[
+          { href: "/feature-flags", label: "Flags" },
+          { href: "/approvals?type=flags", label: "Decided approvals" },
+        ]}
+        active="/feature-flags"
+      />
 
       {pending.length > 0 && (
         <Card>
@@ -95,40 +101,17 @@ export default async function FeatureFlagsPage() {
         </Card>
       )}
 
-      <DataTable<FlagView>
-        columns={[
-          {
-            header: "Key",
-            cell: (f) => <span className="font-mono text-xs">{f.key}</span>,
-          },
-          {
-            header: "Environment",
-            cell: (f) => <StatusBadge status={f.environment} />,
-          },
-          { header: "Description", cell: (f) => f.description },
-          {
-            header: "State",
-            cell: (f) => (
-              <StatusBadge status={f.enabled ? "ENABLED" : "DISABLED"} />
-            ),
-          },
-          {
-            header: "",
-            cell: (f) => (
-              <FlagToggle
-                flagId={f.id}
-                flagKey={f.key}
-                environment={f.environment}
-                enabled={f.enabled}
-                disabled={!canWrite}
-              />
-            ),
-            className: "text-right",
-          },
-        ]}
-        rows={flags}
-        rowKey={(f) => f.id}
-        emptyMessage="No flags configured."
+      <FlagsTable
+        flags={flags.map(
+          (f): FlagRow => ({
+            id: f.id,
+            key: f.key,
+            environment: f.environment,
+            description: f.description,
+            enabled: f.enabled,
+          }),
+        )}
+        canWrite={canWrite}
       />
     </div>
   );
