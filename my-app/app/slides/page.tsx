@@ -291,39 +291,53 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
   },
   {
     kicker: "5 · Path to production",
-    title:
-      "Where Devin fits next: a 3-week POC, then into a fully owned software stack",
+    title: "3-week POC: onboard Devin like a real engineer",
     body: (
       <div className="flex flex-col gap-4">
-        <ol className="list-decimal space-y-2 pl-6">
+        <ol className="list-decimal space-y-3 pl-6">
           <li>
-            <strong>Week 1 — Identity & environments:</strong>{" "}
-            Okta OIDC behind the existing <code>getSession()</code> seam,
-            staging deploy on managed Postgres, secrets in the cloud secret
-            manager.
+            <strong>Week 1 — Context + access:</strong>{" "}
+            connect repos and generate <strong>DeepWiki</strong>; add Devin
+            Skills for local setup, tests, migrations, and deploys; grant
+            scoped staging access.
+            <br />
+            <span className="text-sm text-muted-foreground">
+              Output: Devin replaces mocked auth with Okta OIDC and opens a
+              reviewable PR.
+            </span>
           </li>
           <li>
-            <strong>Week 2 — Real integrations:</strong>{" "}
-            LaunchDarkly-backed flag provider, PSP sandbox integration with
-            reconciliation, tamper-evident audit sink, OpenTelemetry.
+            <strong>Week 2 — Build + verify:</strong>{" "}
+            assign real integrations: LaunchDarkly, PSP sandbox, audit sink,
+            OpenTelemetry. Enable <strong>Computer Use</strong> and
+            test-before-PR Skills so Devin can validate UI flows and CI.
+            <br />
+            <span className="text-sm text-muted-foreground">
+              Output: Devin ships integrations end-to-end and fixes review/CI
+              feedback.
+            </span>
           </li>
           <li>
-            <strong>Week 3 — Pilot & decision:</strong>{" "}
-            Compliance runs the KYC queue against staging data; load test,
-            security review, then a signed go/no-go.
+            <strong>Week 3 — Operate with the team:</strong>{" "}
+            engineers assign backlog tickets directly to Devin; use{" "}
+            <strong>Devin Review</strong> for PR feedback; compliance pilots
+            the KYC flow on staging.
+            <br />
+            <span className="text-sm text-muted-foreground">
+              Output: security review, load test, and signed go/no-go.
+            </span>
           </li>
         </ol>
-        <p>
-          Then <strong>expand beyond the current Retool use case:</strong>{" "}
-          because this is conventional code, Devin can extend the KYC workflow
-          with custom fraud models, proprietary risk scoring, richer
-          decisioning, or bespoke automation without being constrained by the
-          internal-tool abstraction.
+        <p className="rounded-md border bg-muted/50 p-4 text-sm">
+          <strong>Success criteria:</strong>{" "}
+          Devin can take a scoped task from{" "}
+          <strong>context → code → test → PR → review fixes</strong> with
+          engineers primarily reviewing.
         </p>
-        <p className="text-sm text-muted-foreground">
-          Devin&apos;s role: build the prototype, understand the repo, and
-          execute each productionization step as reviewable PRs alongside the
-          engineering team.
+        <p>
+          <strong>Then expand:</strong>{" "}
+          use the same setup for custom fraud models, proprietary risk
+          scoring, new workflows, migrations, and ongoing maintenance.
         </p>
       </div>
     ),
