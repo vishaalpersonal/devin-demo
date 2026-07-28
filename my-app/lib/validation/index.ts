@@ -38,6 +38,19 @@ export const kycDecisionSchema = z.object({
 
 export const ruleUpdateSchema = z.object({
   key: z.string().min(1),
-  valueInt: z.number().int().min(0).max(100).nullable().optional(),
+  valueInt: z.number().int().min(0).max(1_000_000).nullable().optional(),
   valueBool: z.boolean().nullable().optional(),
+});
+
+export const refundIssueSchema = z.object({
+  paymentId: z.string().min(1),
+  amountCents: z.number().int().positive("Amount must be positive"),
+  reason: reasonSchema,
+  idempotencyKey: z.string().min(8),
+});
+
+export const refundApprovalSchema = z.object({
+  refundRequestId: z.string().min(1),
+  approved: z.boolean(),
+  reason: reasonSchema.optional(),
 });

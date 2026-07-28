@@ -168,32 +168,78 @@ async function main() {
     if (!existing) await prisma.kycCase.create({ data: kycCase });
   }
 
-  if ((await prisma.payment.count()) === 0) {
-    await prisma.payment.createMany({
-      data: [
-        {
-          externalId: "pay_1001",
-          customerName: "Dana Whitfield",
-          customerEmail: "dana@example.com",
-          amountCents: 12_50,
-          status: "SETTLED",
-        },
-        {
-          externalId: "pay_1002",
-          customerName: "Omar Haddad",
-          customerEmail: "omar@example.com",
-          amountCents: 249_99,
-          status: "SETTLED",
-        },
-        {
-          externalId: "pay_1003",
-          customerName: "Priya Raman",
-          customerEmail: "priya@example.com",
-          amountCents: 78_00,
-          status: "PARTIALLY_REFUNDED",
-          refundedCents: 20_00,
-        },
-      ],
+  const payments: Array<{
+    externalId: string;
+    customerName: string;
+    customerEmail: string;
+    amountCents: number;
+    status: "SETTLED" | "PENDING" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
+    refundedCents?: number;
+  }> = [
+    {
+      externalId: "pay_1001",
+      customerName: "Dana Whitfield",
+      customerEmail: "dana@example.com",
+      amountCents: 12_50,
+      status: "SETTLED",
+    },
+    {
+      externalId: "pay_1002",
+      customerName: "Omar Haddad",
+      customerEmail: "omar@example.com",
+      amountCents: 249_99,
+      status: "SETTLED",
+    },
+    {
+      externalId: "pay_1003",
+      customerName: "Priya Raman",
+      customerEmail: "priya@example.com",
+      amountCents: 78_00,
+      status: "PARTIALLY_REFUNDED",
+      refundedCents: 20_00,
+    },
+    {
+      externalId: "pay_1004",
+      customerName: "Marcus Bell",
+      customerEmail: "marcus@example.com",
+      amountCents: 39_99,
+      status: "SETTLED",
+    },
+    {
+      externalId: "pay_1005",
+      customerName: "Lena Fischer",
+      customerEmail: "lena@example.com",
+      amountCents: 512_00,
+      status: "SETTLED",
+    },
+    {
+      externalId: "pay_1006",
+      customerName: "Ravi Patel",
+      customerEmail: "ravi@example.com",
+      amountCents: 150_00,
+      status: "REFUNDED",
+      refundedCents: 150_00,
+    },
+    {
+      externalId: "pay_1007",
+      customerName: "Sofia Alvarez",
+      customerEmail: "sofia@example.com",
+      amountCents: 89_50,
+      status: "FAILED",
+    },
+    {
+      externalId: "pay_1008",
+      customerName: "Tom Okonkwo",
+      customerEmail: "tom@example.com",
+      amountCents: 1_250_00,
+      status: "SETTLED",
+    },
+  ];
+  for (const payment of payments) {
+    await prisma.payment.upsert({
+      where: { externalId: payment.externalId },
+      update: {},
+      create: payment,
     });
   }
 
