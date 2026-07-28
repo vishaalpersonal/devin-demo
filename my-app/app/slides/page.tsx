@@ -78,28 +78,6 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
     ),
   },
   {
-    kicker: "Architecture",
-    title: "Governed operational console — one shared foundation, three thin apps",
-    body: (
-      <div className="flex flex-col gap-3">
-        <Image
-          src="/architecture-diagram.png"
-          alt="Architecture: Next.js server with mutation pipeline, governance rules, audit, swappable seams (auth, flags, ledger), PostgreSQL with append-only audit_events, pluggable vendors, cloud-agnostic deploy targets"
-          width={1024}
-          height={563}
-          className="w-full rounded-md border"
-          priority
-        />
-        <p className="text-sm text-muted-foreground">
-          Every sensitive action runs the same pipeline: authenticate →
-          authorize → validate → domain service → audit. Green seams swap for
-          real vendors (Okta, LaunchDarkly, PSP) without touching pages or
-          services.
-        </p>
-      </div>
-    ),
-  },
-  {
     kicker: "1 · Research",
     title: "Retool pain points",
     body: (
@@ -172,6 +150,28 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
           Not built (deliberately): drag-and-drop builder, generic connectors,
           workflow engine — that is Retool&apos;s platform, not this
           team&apos;s need.
+        </p>
+      </div>
+    ),
+  },
+  {
+    kicker: "Architecture",
+    title: "Governed operational console — one shared foundation, three thin apps",
+    body: (
+      <div className="flex flex-col gap-3">
+        <Image
+          src="/architecture-diagram.png"
+          alt="Architecture: Next.js server with mutation pipeline, governance rules, audit, swappable seams (auth, flags, ledger), PostgreSQL with append-only audit_events, pluggable vendors, cloud-agnostic deploy targets"
+          width={1024}
+          height={563}
+          className="w-full rounded-md border"
+          priority
+        />
+        <p className="text-sm text-muted-foreground">
+          Every sensitive action runs the same pipeline: authenticate →
+          authorize → validate → domain service → audit. Green seams swap for
+          real vendors (Okta, LaunchDarkly, PSP) without touching pages or
+          services.
         </p>
       </div>
     ),
