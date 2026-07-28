@@ -101,33 +101,36 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
   },
   {
     kicker: "1 · Research",
-    title: "What Retool actually provides — and where its value lies",
+    title: "Retool pain points",
     body: (
       <div className="flex flex-col gap-4">
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <strong>Visible layer:</strong>{" "} drag-and-drop tables, forms, and
-            queries over production databases and APIs — zero-to-useful in
-            hours.
+            <strong>Complexity compounds:</strong>{" "}
+            larger apps accumulate scattered queries, state, transformers, and
+            event logic that become hard to reason about.
           </li>
           <li>
-            <strong>Invisible layer (the real value):</strong>{" "} managed hosting,
-            data connectors, SSO, centralized RBAC, audit logging, and
-            environments — the governance a fintech must have.
+            <strong>Performance can degrade:</strong>{" "}
+            heavy apps often get slower as component count, queries, and
+            dependencies grow.
           </li>
           <li>
-            <strong>Why customers leave:</strong>{" "} complexity outgrows the
-            component model, performance degrades, production tooling is gated
-            behind enterprise pricing, and the app can&apos;t leave the
-            platform (lock-in).
+            <strong>Enterprise features get expensive:</strong>{" "}
+            source control, observability, advanced governance, and SSO can
+            push teams into high-cost tiers.
+          </li>
+          <li>
+            <strong>Limited control vs. code:</strong>{" "}
+            custom UX, testing, architecture, and domain logic are easier to
+            own in a conventional codebase.
+          </li>
+          <li>
+            <strong>Vendor lock-in:</strong>{" "}
+            apps depend on Retool&apos;s runtime, components, workflows, and
+            resource model, so migration usually means rebuilding.
           </li>
         </ul>
-        <p className="rounded-md border bg-muted/50 p-4 text-sm">
-          For this team the core value is not the app builder — it&apos;s{" "}
-          <strong>governed interfaces for sensitive operational actions</strong>
-          : who can see what, who can move money, who approved it, and proof of
-          all of it.
-        </p>
       </div>
     ),
   },
