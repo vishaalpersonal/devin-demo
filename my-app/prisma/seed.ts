@@ -100,30 +100,72 @@ async function main() {
     }
   }
 
-  if ((await prisma.kycCase.count()) === 0) {
-    await prisma.kycCase.createMany({
-      data: [
-        {
-          customerName: "Dana Whitfield",
-          customerEmail: "dana@example.com",
-          riskScore: 22,
-          status: "PENDING",
-        },
-        {
-          customerName: "Omar Haddad",
-          customerEmail: "omar@example.com",
-          riskScore: 71,
-          status: "IN_REVIEW",
-          notes: "Document mismatch on address; awaiting proof of residence.",
-        },
-        {
-          customerName: "Priya Raman",
-          customerEmail: "priya@example.com",
-          riskScore: 12,
-          status: "APPROVED",
-        },
-      ],
+  const kycCases: Array<{
+    customerName: string;
+    customerEmail: string;
+    riskScore: number;
+    status: "PENDING" | "IN_REVIEW" | "APPROVED" | "REJECTED" | "ESCALATED";
+    notes?: string;
+  }> = [
+    {
+      customerName: "Dana Whitfield",
+      customerEmail: "dana@example.com",
+      riskScore: 22,
+      status: "PENDING",
+    },
+    {
+      customerName: "Omar Haddad",
+      customerEmail: "omar@example.com",
+      riskScore: 71,
+      status: "IN_REVIEW",
+      notes: "Document mismatch on address; awaiting proof of residence.",
+    },
+    {
+      customerName: "Priya Raman",
+      customerEmail: "priya@example.com",
+      riskScore: 12,
+      status: "APPROVED",
+    },
+    {
+      customerName: "Viktor Baranov",
+      customerEmail: "viktor@example.com",
+      riskScore: 88,
+      status: "PENDING",
+      notes: "Sanctions screening hit on a similar name; manual review required.",
+    },
+    {
+      customerName: "Lucía Fernández",
+      customerEmail: "lucia@example.com",
+      riskScore: 45,
+      status: "IN_REVIEW",
+      notes: "Selfie liveness check inconclusive; second document requested.",
+    },
+    {
+      customerName: "Kwame Mensah",
+      customerEmail: "kwame@example.com",
+      riskScore: 93,
+      status: "ESCALATED",
+      notes: "PEP match confirmed; escalated for enhanced due diligence.",
+    },
+    {
+      customerName: "Mei-Ling Chen",
+      customerEmail: "meiling@example.com",
+      riskScore: 8,
+      status: "PENDING",
+    },
+    {
+      customerName: "Jordan Blake",
+      customerEmail: "jordan@example.com",
+      riskScore: 64,
+      status: "REJECTED",
+      notes: "Submitted identity document reported stolen.",
+    },
+  ];
+  for (const kycCase of kycCases) {
+    const existing = await prisma.kycCase.findFirst({
+      where: { customerEmail: kycCase.customerEmail },
     });
+    if (!existing) await prisma.kycCase.create({ data: kycCase });
   }
 
   if ((await prisma.payment.count()) === 0) {

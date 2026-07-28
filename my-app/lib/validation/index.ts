@@ -30,6 +30,12 @@ export const flagApprovalSchema = z.object({
   reason: reasonSchema.optional(),
 });
 
+export const kycDecisionSchema = z.object({
+  caseId: z.string().min(1),
+  decision: z.enum(["APPROVE", "REJECT", "ESCALATE"]),
+  reason: reasonSchema,
+});
+
 export const ruleUpdateSchema = z.object({
   key: z.string().min(1),
   valueInt: z.number().int().min(0).max(100).nullable().optional(),

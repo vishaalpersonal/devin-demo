@@ -7,6 +7,7 @@ export const RULE_KEYS = {
   flagsRequiredApprovers: "flags.requiredApprovers",
   refundsMaxSelfServeCents: "refunds.maxSelfServeCents",
   refundsRequiredApprovers: "refunds.requiredApprovers",
+  kycHighRiskThreshold: "kyc.highRiskThreshold",
 } as const;
 
 export type RuleKey = (typeof RULE_KEYS)[keyof typeof RULE_KEYS];
@@ -33,5 +34,10 @@ export const RULE_DEFAULTS: Record<
   "refunds.requiredApprovers": {
     description: "Number of distinct approvers required for large refunds",
     valueInt: 1,
+  },
+  "kyc.highRiskThreshold": {
+    description:
+      "Risk score at or above which approving a KYC case requires an extra confirmation warning",
+    valueInt: 80,
   },
 };
