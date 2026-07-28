@@ -8,6 +8,10 @@ cd "$(dirname "$0")/.."
 for var in DATABASE_URL MIGRATE_DATABASE_URL; do
   grep -q "^${var}=" .env || grep "^${var}=" .env.example >> .env
 done
+# Migrate default-credential URLs from the old host port (5432) to 5433.
+if grep -qE "(app_user:app_user|postgres:postgres)@localhost:5432/opsconsole" .env; then
+  sed -i.bak 's/@localhost:5432\/opsconsole/@localhost:5433\/opsconsole/g' .env && rm -f .env.bak
+fi
 [ -d node_modules ] || pnpm install
 
 docker compose up -d --wait

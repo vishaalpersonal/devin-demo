@@ -4,7 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const adapter = new PrismaPg({
   connectionString:
     process.env.DATABASE_URL ??
-    "postgresql://app_user:app_user@localhost:5432/opsconsole",
+    "postgresql://app_user:app_user@localhost:5433/opsconsole",
 });
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
