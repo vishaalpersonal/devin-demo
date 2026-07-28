@@ -25,12 +25,12 @@ const EVAL_ROWS: EvalRow[] = [
     feature: "Speed to first working internal tool",
     retool: (
       <span>
-        <Check /> Hours — drag-and-drop over live data
+        Hours — drag-and-drop over live data
       </span>
     ),
     devin: (
       <span>
-        <Check /> Hours — this console was built in ~2h of prompting
+        Hours — this console was built in ~2h of prompting
       </span>
     ),
   },
@@ -38,13 +38,13 @@ const EVAL_ROWS: EvalRow[] = [
     feature: "Governed actions (RBAC, maker-checker, audit)",
     retool: (
       <span>
-        <Partial /> Platform-level permissions & query logs; domain rules
+        Platform-level permissions & query logs; domain rules
         (refund limits, four-eyes) are still yours to build
       </span>
     ),
     devin: (
       <span>
-        <Check /> First-class: server-side authorize(), configurable approver
+        First-class: server-side authorize(), configurable approver
         counts, append-only domain audit — all in owned code
       </span>
     ),
@@ -53,13 +53,13 @@ const EVAL_ROWS: EvalRow[] = [
     feature: "Customization ceiling (custom UX, ML, novel logic)",
     retool: (
       <span>
-        <Cross /> Bounded by component/query model; complex apps hit the
+        Bounded by component/query model; complex apps hit the
         abstraction ceiling
       </span>
     ),
     devin: (
       <span>
-        <Check /> None — it&apos;s a normal TypeScript codebase; Devin extends
+        None — it&apos;s a normal TypeScript codebase; Devin extends
         it (e.g. fraud-risk models) like any repo
       </span>
     ),
@@ -68,12 +68,12 @@ const EVAL_ROWS: EvalRow[] = [
     feature: "Managed platform (hosting, connectors, SSO, upgrades)",
     retool: (
       <span>
-        <Check /> Included — Retool operates it for you
+        Included — Retool operates it for you
       </span>
     ),
     devin: (
       <span>
-        <Cross /> You own deploy, on-call, security patching; Devin reduces but
+        You own deploy, on-call, security patching; Devin reduces but
         does not remove this burden
       </span>
     ),
@@ -82,12 +82,12 @@ const EVAL_ROWS: EvalRow[] = [
     feature: "Cost at this team's scale (3 apps, ~60 eng)",
     retool: (
       <span>
-        <Cross /> $250K/yr license, rising with seats & enterprise features
+        $250K/yr license, rising with seats & enterprise features
       </span>
     ),
     devin: (
       <span>
-        <Check /> Infra ~$10-20K/yr + maintenance time; Devin sessions amortize
+        Infra ~$10-20K/yr + maintenance time; Devin sessions amortize
         the build & upkeep
       </span>
     ),
@@ -121,30 +121,30 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
       <div className="flex flex-col gap-4">
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <strong>Speed to internal software:</strong> Retool collapses the
+            <strong>Speed to internal software:</strong>{" "} Retool collapses the
             cost of building CRUD-heavy operational tools — from database/API
             to a usable KYC queue or refunds dashboard extremely quickly.
           </li>
           <li>
-            <strong>Data connectivity:</strong> the real primitive is not
+            <strong>Data connectivity:</strong>{" "} the real primitive is not
             drag-and-drop UI — it&apos;s making databases, APIs, and SaaS
             systems immediately usable inside an application without building
             glue infrastructure.
           </li>
           <li>
-            <strong>Governance around privileged actions:</strong> for fintech,
+            <strong>Governance around privileged actions:</strong>{" "} for fintech,
             RBAC, SSO, secrets, permissions, audit logs, and controlled access
             to production systems matter more than the component library
             itself.
           </li>
           <li>
-            <strong>A shared runtime and operating model:</strong> every
+            <strong>A shared runtime and operating model:</strong>{" "} every
             internal app gets the same deployment, environments, permissions,
             monitoring, and maintenance model. You&apos;re buying the platform
             underneath the apps, not just the apps.
           </li>
           <li>
-            <strong>Low marginal cost of the next tool:</strong> once Retool is
+            <strong>Low marginal cost of the next tool:</strong>{" "} once Retool is
             established, app #4 or #20 is cheap to add.
           </li>
         </ul>
@@ -185,17 +185,17 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
       <div className="flex flex-col gap-4">
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <strong>Visible layer:</strong> drag-and-drop tables, forms, and
+            <strong>Visible layer:</strong>{" "} drag-and-drop tables, forms, and
             queries over production databases and APIs — zero-to-useful in
             hours.
           </li>
           <li>
-            <strong>Invisible layer (the real value):</strong> managed hosting,
+            <strong>Invisible layer (the real value):</strong>{" "} managed hosting,
             data connectors, SSO, centralized RBAC, audit logging, and
             environments — the governance a fintech must have.
           </li>
           <li>
-            <strong>Why customers leave:</strong> complexity outgrows the
+            <strong>Why customers leave:</strong>{" "} complexity outgrows the
             component model, performance degrades, production tooling is gated
             behind enterprise pricing, and the app can&apos;t leave the
             platform (lock-in).
@@ -217,30 +217,30 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
       <div className="flex flex-col gap-4">
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <strong>Three working apps</strong> on one shared foundation: KYC
+            <strong>Three working apps</strong>{" "} on one shared foundation: KYC
             review queue, refunds dashboard, feature-flag admin — the exact
             Retool footprint.
           </li>
           <li>
-            <strong>Server-side RBAC</strong> — permissions enforced in{" "}
+            <strong>Server-side RBAC</strong>{" "} — permissions enforced in{" "}
             <code>authorize()</code>, not hidden buttons; three roles (support,
             compliance, admin).
           </li>
           <li>
-            <strong>Fintech guardrails:</strong> required reasons, maker-checker
+            <strong>Fintech guardrails:</strong>{" "} required reasons, maker-checker
             approvals (requester ≠ approver), self-serve refund limits,
             idempotent money movement, high-risk KYC warnings.
           </li>
           <li>
-            <strong>Append-only audit log</strong> enforced at the database
+            <strong>Append-only audit log</strong>{" "} enforced at the database
             layer; every action (including denials) recorded.
           </li>
           <li>
-            <strong>Swappable seams:</strong> auth → Okta OIDC, flags →
+            <strong>Swappable seams:</strong>{" "} auth → Okta OIDC, flags →
             LaunchDarkly, ledger → real PSP — interfaces already in place.
           </li>
           <li>
-            <strong>Conventional repo:</strong> Next.js + TypeScript + Postgres,
+            <strong>Conventional repo:</strong>{" "} Next.js + TypeScript + Postgres,
             32 passing tests, one-command startup, CI/CD scaffolding.
           </li>
         </ul>
@@ -271,7 +271,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
             <tr className="border-b align-top">
               <td className="py-3 pr-4 font-medium">App UI + CRUD</td>
               <td className="py-3 pr-4 whitespace-nowrap">
-                <Check /> <strong>Yes</strong>
+                <strong>Yes</strong>
               </td>
               <td className="py-3">
                 Tables, forms, queues, dashboards, search, and actions are
@@ -283,7 +283,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
                 Data + API integrations
               </td>
               <td className="py-3 pr-4 whitespace-nowrap">
-                <Check /> <strong>Yes</strong>
+                <strong>Yes</strong>
               </td>
               <td className="py-3">
                 Easy to connect existing services. Risk is bypassing domain
@@ -293,7 +293,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
             <tr className="border-b align-top">
               <td className="py-3 pr-4 font-medium">Auth, RBAC + audit</td>
               <td className="py-3 pr-4 whitespace-nowrap">
-                <Partial /> <strong>Partially</strong>
+                <strong>Partially</strong>
               </td>
               <td className="py-3">
                 Basic versions are easy; production-grade permissions and
@@ -305,7 +305,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
                 Workflows + operations
               </td>
               <td className="py-3 pr-4 whitespace-nowrap">
-                <Partial /> <strong>Partially</strong>
+                <strong>Partially</strong>
               </td>
               <td className="py-3">
                 Jobs, approvals, retries, CI/CD, and monitoring are buildable,
@@ -315,7 +315,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
             <tr className="border-b align-top">
               <td className="py-3 pr-4 font-medium">Retool as a platform</td>
               <td className="py-3 pr-4 whitespace-nowrap">
-                <Cross /> <strong>Not worth replicating</strong>
+                <strong>Not worth replicating</strong>
               </td>
               <td className="py-3">
                 Generic connectors, visual builder, governance, and reusable
@@ -365,7 +365,7 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
     body: (
       <div className="flex flex-col gap-4">
         <p>
-          <strong>Recommendation: build.</strong> At 3 apps and $250K/yr, this
+          <strong>Recommendation: build.</strong>{" "} At 3 apps and $250K/yr, this
           team is past the point where Retool&apos;s managed convenience beats
           ownership. The prototype shows the hard parts — governance, audit,
           approvals — are reproducible in hours with Devin, in code the team
@@ -373,17 +373,17 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
         </p>
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <strong>Economics:</strong> the license alone funds a lot of
+            <strong>Economics:</strong>{" "} the license alone funds a lot of
             maintenance; Devin compresses both the build and the ongoing
             change-cost (a new permission or workflow is a small, tested PR).
           </li>
           <li>
-            <strong>Control:</strong> no abstraction ceiling, no per-seat
+            <strong>Control:</strong>{" "} no abstraction ceiling, no per-seat
             pricing pressure, no platform lock-in; standard Git/CI/review
             workflows apply.
           </li>
           <li>
-            <strong>Risk, honestly:</strong> you take on ops, security, and
+            <strong>Risk, honestly:</strong>{" "} you take on ops, security, and
             maintenance that Retool absorbed. That&apos;s the trade — validate
             it with a bounded POC before committing.
           </li>
@@ -398,36 +398,39 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
   },
   {
     kicker: "5 · Path to production",
-    title: "Where Devin fits next: a 3-week POC, then beyond Retool's limits",
+    title:
+      "Where Devin fits next: a 3-week POC, then into a fully owned software stack",
     body: (
       <div className="flex flex-col gap-4">
         <ol className="list-decimal space-y-2 pl-6">
           <li>
-            <strong>Week 1 — Identity & environments:</strong> NextAuth + Okta
-            OIDC behind the existing <code>getSession()</code> seam, staging
-            deploy on managed Postgres, secrets in the cloud secret manager.
+            <strong>Week 1 — Identity & environments:</strong>{" "}
+            Okta OIDC behind the existing <code>getSession()</code> seam,
+            staging deploy on managed Postgres, secrets in the cloud secret
+            manager.
           </li>
           <li>
-            <strong>Week 2 — Real integrations:</strong> LaunchDarkly-backed
-            flag provider, PSP-sandbox ledger with reconciliation,
-            tamper-evident audit sink, OpenTelemetry.
+            <strong>Week 2 — Real integrations:</strong>{" "}
+            LaunchDarkly-backed flag provider, PSP sandbox integration with
+            reconciliation, tamper-evident audit sink, OpenTelemetry.
           </li>
           <li>
-            <strong>Week 3 — Pilot & decision:</strong> compliance team runs
-            the KYC queue on staging data; load test, security review, signed
-            go/no-go.
+            <strong>Week 3 — Pilot & decision:</strong>{" "}
+            Compliance runs the KYC queue against staging data; load test,
+            security review, then a signed go/no-go.
           </li>
         </ol>
         <p>
-          Then go <strong>beyond what Retool could do:</strong> Devin can extend
-          the KYC review with custom fraud models, third-party risk-score
-          prediction, or any bespoke workflow — because it&apos;s just code in
-          a repo Devin already knows.
+          Then <strong>expand beyond the current Retool use case:</strong>{" "}
+          because this is conventional code, Devin can extend the KYC workflow
+          with custom fraud models, proprietary risk scoring, richer
+          decisioning, or bespoke automation without being constrained by the
+          internal-tool abstraction.
         </p>
         <p className="text-sm text-muted-foreground">
-          Devin&apos;s role: built the prototype, maintains the codebase, and
-          executes each POC step as reviewable PRs — the same way your
-          engineers work.
+          Devin&apos;s role: build the prototype, understand the repo, and
+          execute each productionization step as reviewable PRs alongside the
+          engineering team.
         </p>
       </div>
     ),
