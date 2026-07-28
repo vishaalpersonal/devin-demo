@@ -4,6 +4,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 [ -f .env ] || cp .env.example .env
+# Backfill any vars missing from an older .env (e.g. MIGRATE_DATABASE_URL).
+for var in DATABASE_URL MIGRATE_DATABASE_URL; do
+  grep -q "^${var}=" .env || grep "^${var}=" .env.example >> .env
+done
 [ -d node_modules ] || pnpm install
 
 docker compose up -d --wait
