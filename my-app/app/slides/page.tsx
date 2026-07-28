@@ -115,6 +115,48 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
     ),
   },
   {
+    kicker: "Retool",
+    title: "The most important aspects of Retool",
+    body: (
+      <div className="flex flex-col gap-4">
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            <strong>Speed to internal software:</strong> Retool collapses the
+            cost of building CRUD-heavy operational tools — from database/API
+            to a usable KYC queue or refunds dashboard extremely quickly.
+          </li>
+          <li>
+            <strong>Data connectivity:</strong> the real primitive is not
+            drag-and-drop UI — it&apos;s making databases, APIs, and SaaS
+            systems immediately usable inside an application without building
+            glue infrastructure.
+          </li>
+          <li>
+            <strong>Governance around privileged actions:</strong> for fintech,
+            RBAC, SSO, secrets, permissions, audit logs, and controlled access
+            to production systems matter more than the component library
+            itself.
+          </li>
+          <li>
+            <strong>A shared runtime and operating model:</strong> every
+            internal app gets the same deployment, environments, permissions,
+            monitoring, and maintenance model. You&apos;re buying the platform
+            underneath the apps, not just the apps.
+          </li>
+          <li>
+            <strong>Low marginal cost of the next tool:</strong> once Retool is
+            established, app #4 or #20 is cheap to add.
+          </li>
+        </ul>
+        <p className="rounded-md border bg-muted/50 p-4 text-sm">
+          The tradeoff: as individual apps become more complex or specialized,
+          Retool&apos;s abstractions become constraints — and owning
+          conventional software starts to look more attractive.
+        </p>
+      </div>
+    ),
+  },
+  {
     kicker: "Architecture",
     title: "Governed operational console — one shared foundation, three thin apps",
     body: (
