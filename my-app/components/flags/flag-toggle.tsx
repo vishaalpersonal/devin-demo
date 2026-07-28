@@ -39,6 +39,7 @@ export function FlagToggle({
       }
       title={`${targetState ? "Enable" : "Disable"} ${flagKey}`}
       description={`Environment: ${environment.toLowerCase()}. This change is recorded in the audit log.`}
+      warningTitle="Production change"
       warning={
         isProd
           ? "This targets PRODUCTION. If maker-checker is enabled, the change will require approval from another user before it is applied."

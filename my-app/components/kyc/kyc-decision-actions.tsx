@@ -65,6 +65,7 @@ export function KycDecisionActions({
         trigger={<Button size="sm">Approve</Button>}
         title={`Approve KYC case for ${customerName}`}
         description="The customer will be marked as verified. This decision is recorded in the audit log."
+        warningTitle="High risk"
         warning={
           highRisk
             ? `HIGH RISK: this case has a risk score of ${riskScore} (threshold ${highRiskThreshold}). Approving requires extra scrutiny — confirm you have reviewed all supporting documents.`

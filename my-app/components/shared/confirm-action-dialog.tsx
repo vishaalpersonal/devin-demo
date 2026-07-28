@@ -25,6 +25,7 @@ export function ConfirmActionDialog({
   title,
   description,
   warning,
+  warningTitle = "Warning",
   confirmLabel = "Confirm",
   destructive = false,
   requireReason = true,
@@ -34,6 +35,7 @@ export function ConfirmActionDialog({
   title: string;
   description: string;
   warning?: string;
+  warningTitle?: string;
   confirmLabel?: string;
   destructive?: boolean;
   requireReason?: boolean;
@@ -80,7 +82,7 @@ export function ConfirmActionDialog({
         </DialogHeader>
         {warning && (
           <Alert variant="destructive">
-            <AlertTitle>Production change</AlertTitle>
+            <AlertTitle>{warningTitle}</AlertTitle>
             <AlertDescription>{warning}</AlertDescription>
           </Alert>
         )}
