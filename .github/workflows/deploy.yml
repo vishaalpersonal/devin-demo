@@ -1,0 +1,120 @@
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+defaults:
+  run:
+    working-directory: my-app
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: opsconsole
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d opsconsole"
+          --health-interval 2s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://app_user:app_user@localhost:5432/opsconsole
+      MIGRATE_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/opsconsole
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: my-app/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm prisma generate
+      - run: pnpm typecheck
+      - run: pnpm prisma migrate deploy
+      - run: pnpm prisma db seed
+      - run: pnpm test
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: my-app
+          push: false
+          tags: ops-console:${{ github.sha }}
+          outputs: type=docker,dest=/tmp/ops-console.tar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ops-console-image
+          path: /tmp/ops-console.tar
+          retention-days: 1
+
+  deploy:
+    # Disabled until deploy credentials exist. To enable:
+    #   1. Set repo variable DEPLOY_ENABLED=true and DEPLOY_CLOUD=aws|azure|gcp.
+    #   2. Provision the OIDC-federated deployer role per infra/DEPLOY.md and
+    #      set the corresponding repo variables referenced below.
+    # No long-lived cloud keys: auth is via GitHub OIDC federation only.
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+    needs: [checks, docker-build]
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write # OIDC federation
+      contents: read
+    env:
+      CLOUD: ${{ vars.DEPLOY_CLOUD }} # aws | azure | gcp (matches infra/ Pulumi stacks)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ops-console-image
+          path: /tmp
+
+      - name: Authenticate to AWS (OIDC)
+        if: env.CLOUD == 'aws'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Authenticate to Azure (OIDC)
+        if: env.CLOUD == 'azure'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Authenticate to GCP (OIDC)
+        if: env.CLOUD == 'gcp'
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Push image and deploy
+        working-directory: infra
+        run: |
+          docker load -i /tmp/ops-console.tar
+          # Push to the cloud registry (ECR / ACR / Artifact Registry), then:
+          #   pulumi stack select "$CLOUD"
+          #   pulumi config set ops-console-infra:cloud "$CLOUD"
+          #   pulumi config set ops-console-infra:image "$IMAGE_REF"
+          #   pulumi up --yes
+          # Migrations run as a separate one-off job with MIGRATE_DATABASE_URL
+          # (from the cloud secret manager) before the service rollout.
+          echo "Deploy target: $CLOUD (see infra/DEPLOY.md)"

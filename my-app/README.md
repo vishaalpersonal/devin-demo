@@ -31,6 +31,17 @@ a governed interface for sensitive operational actions.
 Requires Node >= 20.19, pnpm, and Docker.
 
 ```bash
+pnpm start:local              # http://localhost:3000
+```
+
+One command, idempotent, works from a fresh clone: copies `.env.example` to
+`.env` if missing, installs dependencies, starts Postgres 17 via Docker and
+waits for its healthcheck, runs migrations (as superuser via
+`MIGRATE_DATABASE_URL`) and the idempotent seed, then starts the dev server.
+
+Equivalent manual steps:
+
+```bash
 pnpm install
 cp .env.example .env
 docker compose up -d          # local Postgres 17
