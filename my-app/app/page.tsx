@@ -1,6 +1,7 @@
+import Link from "next/link";
+import { requireSession } from "@/lib/auth";
+import { ROLE_PERMISSIONS } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
-import { createTodo, deleteTodo, toggleTodo } from "@/app/actions";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,62 +9,73 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const todos = await prisma.todo.findMany({ orderBy: { createdAt: "desc" } });
+export default async function Overview() {
+  const session = await requireSession();
+  const [kycPending, pendingFlagChanges, auditCount] = await Promise.all([
+    prisma.kycCase.count({ where: { status: { in: ["PENDING", "IN_REVIEW"] } } }),
+    prisma.flagChangeRequest.count({ where: { status: "PENDING_APPROVAL" } }),
+    prisma.auditEvent.count(),
+  ]);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col gap-6 p-8">
+    <div className="flex max-w-3xl flex-col gap-6">
+      <div>
+        <h1 className="text-xl font-semibold">Overview</h1>
+        <p className="text-sm text-muted-foreground">
+          Shared foundation for three internal apps: KYC review, refunds, and
+          feature-flag administration. Signed in as {session.user.name}.
+        </p>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">{kycPending}</CardTitle>
+            <CardDescription>
+              <Link className="underline" href="/kyc">
+                KYC cases awaiting review
+              </Link>
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">{pendingFlagChanges}</CardTitle>
+            <CardDescription>
+              <Link className="underline" href="/feature-flags">
+                Flag changes awaiting approval
+              </Link>
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">{auditCount}</CardTitle>
+            <CardDescription>
+              <Link className="underline" href="/audit-log">
+                Audit events recorded
+              </Link>
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
       <Card>
         <CardHeader>
-          <CardTitle>Todos</CardTitle>
+          <CardTitle>Your permissions</CardTitle>
           <CardDescription>
-            Next.js + Prisma (SQLite) + shadcn/ui, running locally.
+            Server-enforced; the UI only reflects them.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <form action={createTodo} className="flex gap-2">
-            <Input name="title" placeholder="Add a todo..." required />
-            <Button type="submit">Add</Button>
-          </form>
-          <ul className="flex flex-col gap-2">
-            {todos.map((todo) => (
-              <li
-                key={todo.id}
-                className="flex items-center justify-between rounded-md border px-3 py-2"
-              >
-                <form
-                  action={toggleTodo.bind(null, todo.id, !todo.completed)}
-                >
-                  <button
-                    type="submit"
-                    className={
-                      todo.completed
-                        ? "text-muted-foreground line-through"
-                        : ""
-                    }
-                  >
-                    {todo.title}
-                  </button>
-                </form>
-                <form action={deleteTodo.bind(null, todo.id)}>
-                  <Button variant="ghost" size="sm" type="submit">
-                    Delete
-                  </Button>
-                </form>
-              </li>
-            ))}
-            {todos.length === 0 && (
-              <li className="text-muted-foreground text-sm">
-                No todos yet. Add one above.
-              </li>
-            )}
-          </ul>
+        <CardContent className="flex flex-wrap gap-2 font-mono text-xs">
+          {ROLE_PERMISSIONS[session.user.role].map((p) => (
+            <span key={p} className="rounded bg-muted px-2 py-1">
+              {p}
+            </span>
+          ))}
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 }

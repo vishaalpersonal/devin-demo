@@ -1,0 +1,8 @@
+name: ops-console-infra
+runtime: nodejs
+description: >
+  Cloud-agnostic deployment scaffolding for the AcmePay Ops Console.
+  Select a cloud with `pulumi config set ops-console-infra:cloud aws|azure|gcp`.
+  MOCK: resource definitions are illustrative and have not been deployed;
+  no cloud credentials were used. CI/CD wiring (GitHub Actions) is intentionally
+  omitted until deploy credentials exist.

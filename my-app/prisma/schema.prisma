@@ -1,21 +1,217 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
-  title     String
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Role {
+  SUPPORT_AGENT
+  COMPLIANCE_REVIEWER
+  ADMINISTRATOR
+}
+
+enum KycStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  ESCALATED
+}
+
+enum PaymentStatus {
+  SETTLED
+  PENDING
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum RefundStatus {
+  PENDING_APPROVAL
+  APPROVED
+  ISSUED
+  REJECTED
+  FAILED
+}
+
+enum FlagEnvironment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+}
+
+enum ChangeRequestStatus {
+  PENDING_APPROVAL
+  APPROVED
+  APPLIED
+  REJECTED
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  name               String
+  role               Role
+  createdAt          DateTime            @default(now())
+  auditEvents        AuditEvent[]
+  refundRequests     RefundRequest[]     @relation("RefundRequester")
+  refundApprovals    RefundApproval[]
+  flagChangeRequests FlagChangeRequest[] @relation("FlagRequester")
+  flagApprovals      FlagApproval[]
+
+  @@map("users")
+}
+
+model KycCase {
+  id            String    @id @default(cuid())
+  customerName  String
+  customerEmail String
+  riskScore     Int
+  status        KycStatus @default(PENDING)
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("kyc_cases")
+}
+
+model Payment {
+  id             String          @id @default(cuid())
+  externalId     String          @unique
+  customerName   String
+  customerEmail  String
+  amountCents    Int
+  currency       String          @default("USD")
+  status         PaymentStatus   @default(SETTLED)
+  refundedCents  Int             @default(0)
+  createdAt      DateTime        @default(now())
+  refundRequests RefundRequest[]
+
+  @@map("payments")
+}
+
+model RefundRequest {
+  id             String           @id @default(cuid())
+  payment        Payment          @relation(fields: [paymentId], references: [id])
+  paymentId      String
+  requester      User             @relation("RefundRequester", fields: [requesterId], references: [id])
+  requesterId    String
+  amountCents    Int
+  reason         String
+  status         RefundStatus     @default(PENDING_APPROVAL)
+  idempotencyKey String           @unique
+  ledgerRef      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  approvals      RefundApproval[]
+
+  @@map("refund_requests")
+}
+
+model RefundApproval {
+  id              String        @id @default(cuid())
+  refundRequest   RefundRequest @relation(fields: [refundRequestId], references: [id])
+  refundRequestId String
+  approver        User          @relation(fields: [approverId], references: [id])
+  approverId      String
+  approved        Boolean
+  reason          String?
+  createdAt       DateTime      @default(now())
+
+  @@unique([refundRequestId, approverId])
+  @@map("refund_approvals")
+}
+
+model FeatureFlag {
+  id             String              @id @default(cuid())
+  key            String
+  environment    FlagEnvironment
+  description    String
+  enabled        Boolean             @default(false)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  changeRequests FlagChangeRequest[]
+
+  @@unique([key, environment])
+  @@map("feature_flags")
+}
+
+model FlagChangeRequest {
+  id           String              @id @default(cuid())
+  flag         FeatureFlag         @relation(fields: [flagId], references: [id])
+  flagId       String
+  requester    User                @relation("FlagRequester", fields: [requesterId], references: [id])
+  requesterId  String
+  targetState  Boolean
+  reason       String
+  status       ChangeRequestStatus @default(PENDING_APPROVAL)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  approvals    FlagApproval[]
+
+  @@map("flag_change_requests")
+}
+
+model FlagApproval {
+  id              String            @id @default(cuid())
+  changeRequest   FlagChangeRequest @relation(fields: [changeRequestId], references: [id])
+  changeRequestId String
+  approver        User              @relation(fields: [approverId], references: [id])
+  approverId      String
+  approved        Boolean
+  reason          String?
+  createdAt       DateTime          @default(now())
+
+  @@unique([changeRequestId, approverId])
+  @@map("flag_approvals")
+}
+
+/// Governance rules configured by administrators on the /admin/rules page.
+/// Interpreted by domain services, not by authorize().
+model GovernanceRule {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  description String
+  valueInt    Int?
+  valueBool   Boolean?
+  updatedAt   DateTime @updatedAt
+
+  @@map("governance_rules")
+}
+
+/// Append-only. The app_user DB role has no UPDATE/DELETE grants on this
+/// table and a trigger rejects both (see migration SQL). NOT a substitute
+/// for a production tamper-evident audit system.
+model AuditEvent {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  actor         User     @relation(fields: [actorId], references: [id])
+  actorId       String
+  actorName     String
+  actorRole     Role
+  action        String
+  resourceType  String
+  resourceId    String
+  result        String
+  metadata      Json     @default("{}")
+  correlationId String
+
+  @@index([actorId])
+  @@index([action])
+  @@index([resourceType])
+  @@map("audit_events")
+}
+
+/// Idempotency ledger for external side effects (e.g. ledger/PSP calls).
+model ProcessedAction {
+  id             String   @id @default(cuid())
+  idempotencyKey String   @unique
+  action         String
+  resultJson     Json
+  createdAt      DateTime @default(now())
+
+  @@map("processed_actions")
 }
