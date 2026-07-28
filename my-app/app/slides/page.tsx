@@ -14,85 +14,6 @@ function Partial() {
   return <span className="text-amber-500">◐</span>;
 }
 
-type EvalRow = {
-  feature: string;
-  retool: React.ReactNode;
-  devin: React.ReactNode;
-};
-
-const EVAL_ROWS: EvalRow[] = [
-  {
-    feature: "Speed to first working internal tool",
-    retool: (
-      <span>
-        Hours — drag-and-drop over live data
-      </span>
-    ),
-    devin: (
-      <span>
-        Hours — this console was built in ~2h of prompting
-      </span>
-    ),
-  },
-  {
-    feature: "Governed actions (RBAC, maker-checker, audit)",
-    retool: (
-      <span>
-        Platform-level permissions & query logs; domain rules
-        (refund limits, four-eyes) are still yours to build
-      </span>
-    ),
-    devin: (
-      <span>
-        First-class: server-side authorize(), configurable approver
-        counts, append-only domain audit — all in owned code
-      </span>
-    ),
-  },
-  {
-    feature: "Customization ceiling (custom UX, ML, novel logic)",
-    retool: (
-      <span>
-        Bounded by component/query model; complex apps hit the
-        abstraction ceiling
-      </span>
-    ),
-    devin: (
-      <span>
-        None — it&apos;s a normal TypeScript codebase; Devin extends
-        it (e.g. fraud-risk models) like any repo
-      </span>
-    ),
-  },
-  {
-    feature: "Managed platform (hosting, connectors, SSO, upgrades)",
-    retool: (
-      <span>
-        Included — Retool operates it for you
-      </span>
-    ),
-    devin: (
-      <span>
-        You own deploy, on-call, security patching; Devin reduces but
-        does not remove this burden
-      </span>
-    ),
-  },
-  {
-    feature: "Cost at this team's scale (3 apps, ~60 eng)",
-    retool: (
-      <span>
-        $250K/yr license, rising with seats & enterprise features
-      </span>
-    ),
-    devin: (
-      <span>
-        Infra ~$10-20K/yr + maintenance time; Devin sessions amortize
-        the build & upkeep
-      </span>
-    ),
-  },
-];
 
 const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
   {
@@ -325,37 +246,6 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
             </tr>
           </tbody>
         </table>
-      </div>
-    ),
-  },
-  {
-    kicker: "3 · Evaluate",
-    title: "Retool vs Cognition (Devin + owned code) — top 5 factors",
-    body: (
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr className="border-b text-left">
-              <th className="py-2 pr-4 font-semibold">Feature</th>
-              <th className="py-2 pr-4 font-semibold">Retool</th>
-              <th className="py-2 font-semibold">Cognition (Devin)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {EVAL_ROWS.map((r) => (
-              <tr key={r.feature} className="border-b align-top">
-                <td className="py-3 pr-4 font-medium">{r.feature}</td>
-                <td className="py-3 pr-4">{r.retool}</td>
-                <td className="py-3">{r.devin}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="mt-4 text-sm text-muted-foreground">
-          Honest gaps on the build side: real SSO, tamper-evident audit
-          storage, observability, HA database, and an on-call owner — all
-          addressable, none free.
-        </p>
       </div>
     ),
   },
