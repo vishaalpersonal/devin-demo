@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* The UI components use Base UI-style state variants (data-open, data-checked,
+   ...) but are built on Radix primitives, which expose state via
+   data-state="...". Map the variants accordingly. */
+@custom-variant data-open (&[data-state="open"]);
+@custom-variant data-closed (&[data-state="closed"]);
+@custom-variant data-checked (&[data-state="checked"]);
+@custom-variant data-unchecked (&[data-state="unchecked"]);
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
