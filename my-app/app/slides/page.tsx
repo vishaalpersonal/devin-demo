@@ -290,6 +290,68 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
     ),
   },
   {
+    kicker: "Pricing",
+    title: "What the money buys: Retool vs Devin",
+    body: (
+      <div className="flex flex-col gap-4">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b text-left">
+              <th className="py-2 pr-4 font-semibold"></th>
+              <th className="py-2 pr-4 text-right font-semibold">Retool</th>
+              <th className="py-2 text-right font-semibold">Devin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">
+                Current / estimated annual cost
+              </td>
+              <td className="py-3 pr-4 text-right">
+                <strong>$250K/year</strong>
+              </td>
+              <td className="py-3 text-right">
+                <strong>~$30K/year</strong>
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Pricing basis</td>
+              <td className="py-3 pr-4 text-right">
+                Enterprise platform contract
+              </td>
+              <td className="py-3 text-right">60 dev seats</td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Monthly cost</td>
+              <td className="py-3 pr-4 text-right">
+                <strong>~$20.8K/month</strong>
+              </td>
+              <td className="py-3 text-right">
+                <strong>~$2.5K/month</strong>
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Primary value</td>
+              <td className="py-3 pr-4 text-right">Internal app platform</td>
+              <td className="py-3 text-right">AI engineering capacity</td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Annual delta</td>
+              <td className="py-3 pr-4 text-right">—</td>
+              <td className="py-3 text-right">
+                <strong>~$220K lower</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="text-sm text-muted-foreground">
+          And the Devin spend is not app-shaped: the same seats cover every
+          repo and backlog, not just the three internal tools.
+        </p>
+      </div>
+    ),
+  },
+  {
     kicker: "5 · Path to production",
     title: "3-week POC: onboard Devin like a real engineer",
     body: (
