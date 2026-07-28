@@ -6,4 +6,6 @@ fintech's three internal apps (KYC review, refunds, feature flags), built as a
 
 - `my-app/` — the Next.js application (setup + docs in its README)
 - `ARCHITECTURE.md` — one-page architecture overview and tradeoffs
-- `infra/` — mocked Pulumi deployment sketches (AWS/Azure/GCP), never deployed
+- `infra/` — mocked Pulumi deployment sketches (AWS/Azure/GCP), never deployed;
+  `infra/DEPLOY.md` documents the OIDC deploy setup for
+  `.github/workflows/deploy.yml` (deploy job disabled until credentials exist)

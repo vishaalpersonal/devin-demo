@@ -93,8 +93,9 @@ record audit event → return structured result. See
 
 Real OIDC/SAML SSO with SCIM-provisioned roles; secrets management; tamper-
 evident audit storage and retention policy; real ledger/PSP integration with
-reconciliation; observability (metrics, tracing, alerting); CI/CD with deploy
-credentials; backup/DR; security review, pen testing, and compliance signoff.
+reconciliation; observability (metrics, tracing, alerting); deploy credentials
+for the existing CI/CD pipeline (see `../infra/DEPLOY.md`); backup/DR;
+security review, pen testing, and compliance signoff.
 
 ## What this does not attempt to replace from Retool
 

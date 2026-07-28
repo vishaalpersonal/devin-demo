@@ -79,5 +79,6 @@ server-side.
 
 Mock auth (no real SSO/MFA); audit not tamper-evident; no rate limiting or
 CSRF hardening beyond framework defaults; no observability stack; refunds/KYC
-workflows are placeholders pending the next iterations; infra and CI/CD are
-mocked (no deploy credentials); single-node Postgres, no HA/backup story.
+workflows are placeholders pending the next iterations; infra is mocked and CI
+runs but the deploy job is disabled pending credentials (see `infra/DEPLOY.md`);
+single-node Postgres, no HA/backup story.
