@@ -2,33 +2,7 @@
 
 One shared foundation, three thin purpose-built apps. Not a Retool clone: a
 governed interface for sensitive operational actions.
-
-```mermaid
-flowchart LR
-  subgraph Browser
-    UI[Next.js pages + shadcn/ui components]
-  end
-  subgraph Server["Next.js server (single deployable container)"]
-    SA[Server actions]
-    AUTHN["lib/auth — getSession()\n(dev switcher today, NextAuth/Okta OIDC later)"]
-    AUTHZ["lib/permissions — authorize(user, permission)"]
-    RULES["lib/services/rules — governance rules\n(approver counts, limits)"]
-    SVC["Domain services\nflags | refunds | kyc"]
-    AUDIT["lib/audit — recordAuditEvent()"]
-    FLAGP["FlagProvider interface\n(DB today, LaunchDarkly later)"]
-    LEDGER["LedgerProvider interface\n(mock today, PSP/ledger later)"]
-  end
-  subgraph Postgres["PostgreSQL (docker-compose locally; RDS/Azure PG/Cloud SQL in prod)"]
-    TABLES[(domain tables)]
-    AE[("audit_events\napp role: INSERT+SELECT only\ntrigger rejects UPDATE/DELETE")]
-  end
-  UI --> SA --> AUTHN --> AUTHZ --> SVC
-  SVC --> RULES
-  SVC --> FLAGP --> TABLES
-  SVC --> LEDGER
-  SVC --> AUDIT --> AE
-  SVC --> TABLES
-```
+<img width="3061" height="1684" alt="image" src="https://github.com/user-attachments/assets/f5247662-4236-48c4-88b5-3bed364a1def" />
 
 ## Mutation pipeline (every sensitive action)
 
