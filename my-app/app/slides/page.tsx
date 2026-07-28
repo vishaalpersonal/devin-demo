@@ -254,6 +254,82 @@ const SLIDES: { title: string; kicker: string; body: React.ReactNode }[] = [
   },
   {
     kicker: "3 · Evaluate",
+    title: "What can honestly be replicated with Devin",
+    body: (
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b text-left">
+              <th className="py-2 pr-4 font-semibold">Area</th>
+              <th className="py-2 pr-4 font-semibold">
+                Replicable with Devin?
+              </th>
+              <th className="py-2 font-semibold">Honest assessment / risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">App UI + CRUD</td>
+              <td className="py-3 pr-4 whitespace-nowrap">
+                <Check /> <strong>Yes</strong>
+              </td>
+              <td className="py-3">
+                Tables, forms, queues, dashboards, search, and actions are
+                straightforward. Low risk.
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">
+                Data + API integrations
+              </td>
+              <td className="py-3 pr-4 whitespace-nowrap">
+                <Check /> <strong>Yes</strong>
+              </td>
+              <td className="py-3">
+                Easy to connect existing services. Risk is bypassing domain
+                APIs with unsafe direct DB access.
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Auth, RBAC + audit</td>
+              <td className="py-3 pr-4 whitespace-nowrap">
+                <Partial /> <strong>Partially</strong>
+              </td>
+              <td className="py-3">
+                Basic versions are easy; production-grade permissions and
+                compliance-grade auditability require real engineering.
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">
+                Workflows + operations
+              </td>
+              <td className="py-3 pr-4 whitespace-nowrap">
+                <Partial /> <strong>Partially</strong>
+              </td>
+              <td className="py-3">
+                Jobs, approvals, retries, CI/CD, and monitoring are buildable,
+                but the team now owns reliability and incidents.
+              </td>
+            </tr>
+            <tr className="border-b align-top">
+              <td className="py-3 pr-4 font-medium">Retool as a platform</td>
+              <td className="py-3 pr-4 whitespace-nowrap">
+                <Cross /> <strong>Not worth replicating</strong>
+              </td>
+              <td className="py-3">
+                Generic connectors, visual builder, governance, and reusable
+                platform infrastructure are where Retool has real depth.
+                Building these defeats the purpose.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    ),
+  },
+  {
+    kicker: "3 · Evaluate",
     title: "Retool vs Cognition (Devin + owned code) — top 5 factors",
     body: (
       <div className="overflow-x-auto">
@@ -392,7 +468,7 @@ export default function SlidesPage() {
         <div className="flex items-center gap-2">
           {SLIDES.map((s, i) => (
             <button
-              key={s.kicker}
+              key={s.title}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => setIndex(i)}
